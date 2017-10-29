@@ -1,6 +1,5 @@
 <?php
 namespace API;
-require_once 'database.php';
 
 class Model {
     public $db;
@@ -11,7 +10,7 @@ class Model {
     function __construct($app, $child) {
         $this->childConstructor();
         $this->app = $app;
-        $this->db = $this->db = new Database\DatabaseHandle($this->app->config['DB']);
+        $this->db = $this->app->db;
         $this->table = $child;
         $this->events = $CONFIG['WEEK'];
     }

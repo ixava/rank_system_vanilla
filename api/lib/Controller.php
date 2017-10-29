@@ -68,13 +68,13 @@ class Controller {
           $newData = array_reduce(
             $data, 
             function ($acc, $item){
-              array_push($acc, $item);
+              $acc[$item['id']] = $item;
               return $acc;
             },
             []
           );
         }
-        elseif (count($data) > 0) $newData = [$data];
+        elseif (count($data) > 0) $newData = [$data['id'] => $data];
         else $newData = $data;
         return [$state => $msg, 'data' => $newData];
     }

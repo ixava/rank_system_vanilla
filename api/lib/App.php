@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../controllers.php');
 require_once 'Model.php';
 require_once(__DIR__ . '/../models.php');
 require_once 'output.php';
+require_once 'database.php';
 
 class App {
   private $dataTarget, $customMethod, $args, $controller, $controllerPath, $modelPath;
@@ -13,6 +14,9 @@ class App {
     $this->config = $config;
     $this->getCRUDAction();
     $this->validateCrudAction();
+    $this->db = new Database\DatabaseHandle($this->config['DB']);
+    $this->modelPath = '\\API\\Models\\' . ucfirst($this->dataTarget);
+    $this->controllerPath = '\\API\\Controllers\\' . ucfirst($this->dataTarget);
     $this->args = $_GET;
     $this->loadController();
     $this->runRequest();
@@ -39,10 +43,6 @@ class App {
       default:
         output\json_error("Invalid parameter for custom_method");
     }
-    $this->modelPath = '\\API\\Models\\' . ucfirst($this->dataTarget);
-    $this->controllerPath = '\\API\\Controllers\\' . ucfirst($this->dataTarget);
-    
-    
   }
   private function loadController(){
     $this->controller = new $this->controllerPath($this, new $this->modelPath($this, $this->dataTarget));
